@@ -44,6 +44,28 @@ void insertAtEnd(v2Node **head, v2 value) {
   new->prev = temp;
 }
 
+void deleteAtStart(v2Node **head) {
+  if(head == NULL)
+    return;
+
+  printf("deleting first element...\n");
+
+  *head = (*head)->next;
+  (*head)->prev = NULL;
+}
+void deleteAtEnd(v2Node **head) {
+  v2Node *temp = *head;
+  if(head == NULL)
+    return;
+
+  printf("deleting last element...\n");
+
+  while(temp->next != NULL)
+    temp = temp->next;
+  temp = temp->prev;
+  temp->next = NULL;
+}
+
 void printForward(v2Node *head) {
   v2Node *temp = head;
   printf("Forward:\n");
@@ -73,6 +95,13 @@ int main() {
   insertAtEnd(&newListHead, (v2){0.2, 0.2});
   insertAtStart(&newListHead, (v2){-0.1, -0.1});
   insertAtEnd(&newListHead, (v2){0.3, 0.3});
+
+  printForward(newListHead); printReverse(newListHead);
+
+  deleteAtStart(&newListHead);
+  printForward(newListHead); printReverse(newListHead);
+
+  deleteAtEnd(&newListHead);
   printForward(newListHead); printReverse(newListHead);
   return 0;
 }
