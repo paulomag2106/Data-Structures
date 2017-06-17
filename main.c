@@ -12,8 +12,6 @@ typedef struct t_v2Node{
   struct t_v2Node *prev;
 }v2Node;
 
-v2Node *head;
-
 v2Node *newNode(v2 value) {
   v2Node *newNode = (v2Node *)malloc(sizeof(v2Node));
   newNode->value = value;
@@ -22,22 +20,22 @@ v2Node *newNode(v2 value) {
   return newNode;
 }
 
-void insertAtStart(v2 value) {
+void insertAtStart(v2Node **head, v2 value) {
   v2Node *new = newNode(value);
   if(head == NULL) {
-    head = new;
+    *head = new;
     return;
   }
-  head->prev = new;
-  new->next = head;
-  head = new;
+  (*head)->prev = new;
+  new->next = *head;
+  *head = new;
 }
 
-void insertAtEnd(v2 value) {
+void insertAtEnd(v2Node **head, v2 value) {
   v2Node *new = newNode(value);
-  v2Node *temp = head;
+  v2Node *temp = *head;
   if(head == NULL) {
-    head = new;
+    *head = new;
     return;
   }
 
@@ -46,7 +44,7 @@ void insertAtEnd(v2 value) {
   new->prev = temp;
 }
 
-void printForward() {
+void printForward(v2Node *head) {
   v2Node *temp = head;
   printf("Forward:\n");
   while(temp != NULL) {
@@ -56,7 +54,7 @@ void printForward() {
   printf("\n");
 }
 
-void printReverse() {
+void printReverse(v2Node *head) {
   v2Node *temp = head;
   if(temp == NULL) return;
   while(temp->next != NULL) temp = temp->next;
@@ -70,14 +68,11 @@ void printReverse() {
 }
 
 int main() {
-  head = NULL;
-  insertAtStart((v2){0.1, 0.1}); printForward(); printReverse();
-  insertAtStart((v2){0.2, 0.2}); printForward(); printReverse();
-  insertAtStart((v2){0.3, 0.3}); printForward(); printReverse();
-  insertAtStart((v2){0.4, 0.4}); printForward(); printReverse();
-  insertAtEnd((v2){0.1, 0.1}); printForward(); printReverse();
-  insertAtEnd((v2){0.2, 0.2}); printForward(); printReverse();
-  insertAtEnd((v2){0.3, 0.3}); printForward(); printReverse();
-  insertAtEnd((v2){0.4, 0.4}); printForward(); printReverse();
+  v2Node *newListHead = newNode((v2){0.1, 0.1});
+  insertAtStart(&newListHead, (v2){0.0, 0.0});
+  insertAtEnd(&newListHead, (v2){0.2, 0.2});
+  insertAtStart(&newListHead, (v2){-0.1, -0.1});
+  insertAtEnd(&newListHead, (v2){0.3, 0.3});
+  printForward(newListHead); printReverse(newListHead);
   return 0;
 }
