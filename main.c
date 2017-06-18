@@ -52,6 +52,7 @@ void deleteAtStart(v2Node **head) {
 
   *head = (*head)->next;
   (*head)->prev = NULL;
+  free((*head)->prev);
 }
 void deleteAtEnd(v2Node **head) {
   v2Node *temp = *head;
@@ -64,6 +65,19 @@ void deleteAtEnd(v2Node **head) {
     temp = temp->next;
   temp = temp->prev;
   temp->next = NULL;
+  free(temp->next);
+}
+
+void freeList(v2Node *head)
+{
+   while (head)
+    {
+      v2Node* temp;
+      temp = head;
+      head = head->next;
+      temp = NULL;
+      free(temp);
+    }
 }
 
 void printForward(v2Node *head) {
@@ -90,7 +104,8 @@ void printReverse(v2Node *head) {
 }
 
 int main() {
-  v2Node *newListHead = newNode((v2){0.1, 0.1});
+  v2Node *newListHead = (v2Node *)malloc(sizeof(v2Node));
+  newListHead = newNode((v2){0.1, 0.1});
   insertAtStart(&newListHead, (v2){0.0, 0.0});
   insertAtEnd(&newListHead, (v2){0.2, 0.2});
   insertAtStart(&newListHead, (v2){-0.1, -0.1});
@@ -103,5 +118,7 @@ int main() {
 
   deleteAtEnd(&newListHead);
   printForward(newListHead); printReverse(newListHead);
+
+  freeList(newListHead);
   return 0;
 }
